@@ -1,13 +1,12 @@
 // ==UserScript==
-// @name         JustDice
+// @name         JSDice
 // @namespace    https://just-dice.com/
 // @version      0.1
-// @author       You
+// @author       HHassig
 // @match        https://just-dice.com/
-// @grant        none
 // ==/UserScript==
 
-var base = 0.00000310.toFixed(8);
+var base = 0.00000100.toFixed(8);
 var win = false;
 var counter = 0;
 var seedCounter = 0;
@@ -33,10 +32,11 @@ function invest(amount) {
 	$("#invest_button").click();
 }
 function seedChange() {
+	seedCounter = 0;
 	$("#a_random").click();
 	document.getElementsByClassName('seed_button')[0].setAttribute("id", "clickSeed");
 	$("#clickSeed").click();
-	seedCounter = 0;
+	document.querySelector('.fancybox-close').click();
 }
 
 function tip(amount) {
@@ -48,9 +48,10 @@ function tip(amount) {
 }
 
 function bet(amount) {
+	seedCounter += 1;
+	console.log(amount);
 	document.getElementById('pct_bet').value = amount;
 	$("#a_hi").click();
-	console.log(amount);
 	return getBalance();
 }
 
@@ -70,12 +71,10 @@ function bet(amount) {
 				counter = 0;
 				bet(base);
 				win = false;
-				seedCounter += 1;
 			}
 			if (startingBalance > balanceNow) {
 				counter += 1;
 				bet((base * Math.pow(2, counter)).toFixed(8));
-				seedCounter += 1;
 			}
 			if (seedCounter > 5000) {
 				seedCounter = 0;
